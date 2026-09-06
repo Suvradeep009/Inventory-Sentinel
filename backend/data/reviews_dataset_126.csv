@@ -1,0 +1,127 @@
+id,product_id,reviewer,text,timestamp
+1,1,manoj_backup,Pure sine wave output is clean and runs our sensitive lab electronics without any line distortion.,2026-03-12T19:00:00
+2,1,neha_industrial,Very solid 3000W inverter. Powers our workshop tools smoothly with zero voltage drop.,2026-04-30T13:00:00
+3,1,rajesh_tech,"Cooling fan is a bit noisy when drawing over 2000W continuous, but temperature stays under 50C.",2026-03-18T10:00:00
+4,1,priya_consultant,Installed in our solar backup setup. Seamless power transition during municipal grid cuts.,2026-05-05T15:00:00
+5,1,rajesh_tech,High efficiency conversion rate. Measured 94% efficiency under steady half-load testing.,2026-03-18T02:00:00
+6,1,harish_engineer,Solid aluminium casing dissipates heat effectively. The remote monitoring display is accurate.,2026-04-19T05:00:00
+7,1,suresh_grid,Good protection circuitry. The low-voltage cutoff saved our battery bank from over-discharging.,2026-02-11T21:00:00
+8,1,suresh_grid,Reliable inverter for off-grid operations. Does the job consistently day in and day out.,2026-07-08T22:00:00
+9,2,anand_facilities,Severe capacity degradation after only 35 cycles. Cells will not balance above 70% state of charge.,2026-04-04T12:00:00
+10,2,rajesh_tech,BMS unit cuts out prematurely under moderate 40A load. Defective internal thermal sensors.,2026-02-28T02:00:00
+11,2,deepak_solar,Battery completely failed to hold charge overnight in mild 12C ambient temperatures. Unacceptable.,2026-06-06T09:00:00
+12,2,pooja_operations,Severe cell swelling observed after two months of standard trickle charging. Safety hazard.,2026-03-16T06:00:00
+13,2,kavita_electrical,Discharge curve drops off a cliff past 50% capacity. Terrible build quality on this production run.,2026-07-03T10:00:00
+14,2,suresh_grid,Internal resistance measured dangerously high across two cells. Returning for full warranty refund.,2026-04-29T15:00:00
+15,2,suresh_grid,Does not meet rated amp-hour specifications. Lab test showed only 62Ah on a supposedly 100Ah unit.,2026-04-03T13:00:00
+16,2,anand_facilities,One module arrived dead on arrival with zero terminal voltage. Quality control is nonexistent.,2026-06-24T00:00:00
+17,3,tarun_gridguard,Incredible fuel efficiency. Ran continuously for 16 hours on a single tank under 50% load.,2026-07-24T16:00:00
+18,3,karan_energy,Electric start fired up on the very first try even in freezing winter conditions. Superb engineering.,2026-04-17T07:00:00
+19,3,vikram_powersystems,Extremely quiet inverter generator. You can stand next to it and hold a normal conversation.,2026-06-30T18:00:00
+20,3,neha_industrial,Dual-fuel capability works flawlessly between gasoline and propane without sputtering.,2026-04-29T00:00:00
+21,3,suresh_grid,"Clean THD under 2.5%, safely powering sensitive IT server racks during emergency outages.",2026-02-14T14:00:00
+22,3,sunita_eng,"Heavy duty build quality, durable wheels, and comfortable folding pull handle. A masterclass.",2026-05-02T10:00:00
+23,3,rohit_testing,Best backup generator in its class. Worth every rupee for residential and commercial resilience.,2026-05-29T20:00:00
+24,3,rohit_testing,Low oil automatic shutdown prevented disaster when a hose loosened. Fantastic safety logic.,2026-06-08T11:00:00
+25,4,manoj_backup,Multi-stage smart charging algorithm revived our depleted deep-cycle banks quickly.,2026-06-04T07:00:00
+26,4,amit_sharma,Compact footprint and stays pleasantly cool thanks to the internal active thermal vent.,2026-03-24T11:00:00
+27,4,anand_facilities,"Clear digital status readout showing charging stage, current amperage, and terminal voltage.",2026-05-22T05:00:00
+28,4,rohit_testing,Solid charger for everyday workshop use. Reliable clamps with heavy-gauge insulation.,2026-07-29T16:00:00
+29,4,suresh_grid,Charges lead-acid and lithium chemistry profiles accurately. Mode selector is straightforward.,2026-05-22T04:00:00
+30,4,suresh_grid,Good value charger that delivers steady 25A current without thermal throttling.,2026-05-05T18:00:00
+31,5,manoj_backup,Clean isolated power supply that eliminated all ground loop hum in our testing setup.,2026-02-21T05:00:00
+32,5,manoj_backup,Heavy duty surge suppression clamped a municipal spike without damaging downstream units.,2026-02-07T05:00:00
+33,5,karan_energy,Consistent voltage rails across all 12V and 24V terminal outputs. Exceptional regulation.,2026-05-19T05:00:00
+34,5,anand_facilities,Industrial grade chassis with DIN-rail mounting brackets included. Very convenient install.,2026-07-01T06:00:00
+35,5,harish_engineer,High MTBF rating shows in the component selection. Premium Japanese capacitors throughout.,2026-02-05T14:00:00
+36,5,sunita_eng,Tested under 100% continuous load for 72 hours. Case remained warm but well within safe tolerance.,2026-05-23T02:00:00
+37,6,anand_facilities,Outstanding mono-PERC cell efficiency. Generates peak 535W even on slightly hazy afternoons.,2026-05-14T20:00:00
+38,6,meera_greenenergy,Heavy duty tempered glass and reinforced aluminium frame resisted severe hailstorms easily.,2026-07-03T00:00:00
+39,6,anand_facilities,Pre-wired with MC4 connectors that clicked securely into place. Clean voltage curves.,2026-06-26T01:00:00
+40,6,harish_engineer,Best price-to-wattage ratio on the market right now. Highly recommended for rooftop installations.,2026-03-02T08:00:00
+41,6,karan_energy,Bypass diodes function perfectly with minimal partial shading losses.,2026-03-12T20:00:00
+42,7,meera_greenenergy,Digital micro-controller provides instantaneous voltage step correction during brownouts.,2026-06-20T10:00:00
+43,7,karan_energy,Saved our high-end dental equipment during extreme voltage fluctuations.,2026-06-22T20:00:00
+44,7,pooja_operations,Relay click is audible but switching response time is under 15 milliseconds.,2026-03-21T13:00:00
+45,7,pooja_operations,Sturdy metal enclosure with clear LED input/output voltage display.,2026-02-06T04:00:00
+46,8,karan_energy,Inverter board blew a capacitor after only three weeks of clean server room deployment.,2026-03-25T03:00:00
+47,8,sunita_eng,"Cooling fan is excessively loud, measuring over 68dB in an enclosed office rack.",2026-07-16T08:00:00
+48,8,karan_energy,"Battery backup transfer failed twice during scheduled grid maintenance, shutting down servers.",2026-07-16T07:00:00
+49,8,kavita_electrical,Firmware update bricked the LCD interface. Customer support refused timely replacement.,2026-02-03T03:00:00
+50,8,deepak_solar,High idle power consumption of over 110W even when load is completely off.,2026-04-09T12:00:00
+51,9,arun_contractor,The smart net-metering export works flawlessly with our state utility discom.,2026-05-12T05:00:00
+52,9,neha_industrial,"Mobile app connectivity provides real-time solar yield, battery SOC, and grid draw charts.",2026-02-12T07:00:00
+53,9,suresh_grid,Pure sine wave output with parallel stacking capability up to 30kW. Excellent architecture.,2026-05-04T10:00:00
+54,9,tarun_gridguard,Seamless zero-millisecond transfer switch. Desktop computers never reboot during power cuts.,2026-06-16T01:00:00
+55,9,rohit_testing,Super efficient MPPT tracking handles dual PV string arrays with differing angles effortlessly.,2026-07-09T10:00:00
+56,10,meera_greenenergy,Extremely heavy duty tall tubular plates. Water level indicators make maintenance simple.,2026-07-19T23:00:00
+57,10,meera_greenenergy,Provides reliable 6.5 hours of backup under full home inverter load.,2026-03-25T22:00:00
+58,10,manoj_backup,Acid fumes are minimal thanks to ceramic vent plugs.,2026-05-01T14:00:00
+59,10,vikram_powersystems,Excellent lifespan history across our residential installations.,2026-05-17T07:00:00
+60,11,rajesh_tech,Propane mode runs so clean with virtually zero exhaust smell and easy carburetor storage.,2026-05-15T20:00:00
+61,11,meera_greenenergy,Weighs only 42kg and fits comfortably into an SUV trunk for field assignments.,2026-03-25T02:00:00
+62,11,pooja_operations,Eco-throttle mode automatically dials down RPM during light tool usage.,2026-06-21T07:00:00
+63,12,rohit_testing,Tracks the maximum power point within seconds under dynamic cloud cover.,2026-07-30T00:00:00
+64,12,sunita_eng,Comprehensive LCD panel shows accumulated kWh generation and battery temperature compensation.,2026-07-24T22:00:00
+65,12,manoj_backup,Heavy heatsink keeps temperature below 45C even at full 60A charging current.,2026-07-22T21:00:00
+66,13,neha_industrial,Type-2 SPD with visual fault flag indicator. Snapped onto standard DIN rail in 30 seconds.,2026-02-16T18:00:00
+67,13,priya_consultant,High surge discharge rating of 40kA per phase provides immense peace of mind.,2026-06-28T11:00:00
+68,13,siddharth_m,Essential line protection for industrial control panels.,2026-06-01T01:00:00
+69,14,pooja_operations,Motorized interlock mechanism prevents any dangerous cross-feed between mains and generator.,2026-06-20T01:00:00
+70,14,kavita_electrical,Auxiliary generator start contacts triggered our standby genset within 4 seconds of power loss.,2026-06-10T06:00:00
+71,14,siddharth_m,Robust silver-alloy contact points designed for thousands of transfer cycles.,2026-02-06T18:00:00
+72,15,arun_contractor,Galvanic isolation completely eliminated electro-magnetic interference on our audio gear.,2026-06-15T18:00:00
+73,15,rohit_testing,Copper winding quality is top tier with vacuum pressure impregnation.,2026-07-30T12:00:00
+74,15,amit_sharma,High thermal capacity handles inrush current from heavy industrial motors easily.,2026-04-26T18:00:00
+75,16,harish_engineer,RS-485 Modbus interface allowed direct integration into our SCADA monitoring system.,2026-05-25T15:00:00
+76,16,harish_engineer,Tamper-proof optical port and high Class 1.0 measurement accuracy.,2026-04-30T19:00:00
+77,16,sunita_eng,Accurate import/export active and reactive energy logging.,2026-05-31T03:00:00
+78,17,amit_sharma,Charges our fleet vehicles at full 22kW three-phase speed. Cut turnaround time in half.,2026-03-26T14:00:00
+79,17,harish_engineer,Integrated RFID card authorization prevents unauthorized public charging.,2026-05-10T07:00:00
+80,17,vikram_powersystems,IP65 weatherproof enclosure has weathered monsoon rain with zero ingress.,2026-05-02T08:00:00
+81,17,tarun_gridguard,Dynamic load balancing prevents blowing the main facility transformer.,2026-05-25T12:00:00
+82,18,suresh_grid,Per-outlet power measurement and remote reboot capability saved multiple site visits.,2026-04-10T09:00:00
+83,18,harish_engineer,C13 and C19 lockable sockets prevent accidental cord pull-outs.,2026-05-02T08:00:00
+84,18,rohit_testing,Built-in web server with SNMPv3 alerts for over-current conditions.,2026-02-24T13:00:00
+85,19,anand_facilities,Liquid-cooled four-cylinder diesel engine runs with rock-solid torque.,2026-07-24T00:00:00
+86,19,deepak_solar,Acoustic canopy reduces sound to under 65 dBA at 7 meters.,2026-06-16T18:00:00
+87,19,rajesh_tech,Massive 65-liter base fuel tank allows 24-hour non-stop emergency operations.,2026-04-13T12:00:00
+88,20,manoj_backup,6000+ cycle life rating with integrated CAN/RS485 communication to our hybrid inverters.,2026-03-11T21:00:00
+89,20,rohit_testing,Wall-mountable compact form factor replaced four huge lead-acid batteries and saved valuable floor space.,2026-03-10T15:00:00
+90,20,amit_sharma,Built-in active cell balancer ensures all 16 cells stay within 5mV deviation.,2026-07-30T08:00:00
+91,20,harish_engineer,Charges to 100% in under 2 hours without heating up. Phenomenal modern energy storage.,2026-07-05T10:00:00
+92,20,rohit_testing,"Zero maintenance, built-in display shows state of health and cell voltages.",2026-07-19T20:00:00
+93,21,tarun_gridguard,Seamless integration with our 10kW horizontal-axis wind turbine. Dump load controller works reliably.,2026-03-05T13:00:00
+94,21,priya_consultant,Handles variable gust frequency inputs smoothly. Maximum power extraction curve is highly accurate.,2026-04-17T12:00:00
+95,21,siddharth_m,Rugged outdoor IP65 casing holds up to strong coastal winds and salt spray without corrosion.,2026-03-30T23:00:00
+96,21,neha_industrial,Grid-tie synchronization takes less than 2 seconds after hitting wind cut-in speeds.,2026-05-31T00:00:00
+97,22,amit_sharma,Rapid pulse discharge is mind-blowing. Absorbs 200A peak regenerative braking current without heating up.,2026-05-27T20:00:00
+98,22,suresh_grid,Rated for 1 million cycles and shows zero signs of capacity loss during heavy industrial cycling tests.,2026-04-10T12:00:00
+99,22,rohit_testing,Integrated active balancing circuit keeps ultra-capacitors perfectly leveled across all cells.,2026-03-18T16:00:00
+100,22,priya_consultant,Ideal for crane lift stabilization and peak shaving in automated manufacturing cells.,2026-02-18T21:00:00
+101,23,anand_facilities,Converts 50Hz Indian grid power to 60Hz cleanly for our imported precision CNC milling machines.,2026-04-12T16:00:00
+102,23,manoj_backup,Voltage regulation is tighter than 1%. THD is well below 2% even under heavy inductive motor loads.,2026-06-08T21:00:00
+103,23,tarun_gridguard,Solid-state PWM IGBT design is whisper-quiet and vastly superior to old rotary motor-generator sets.,2026-05-12T16:00:00
+104,24,meera_greenenergy,Dual MPPT channels maximize harvest on partially shaded complex residential rooftop planes.,2026-04-23T03:00:00
+105,24,tarun_gridguard,Plug-and-play installation cut rooftop wiring time by 40%. Built-in PLC communication works flawlessly.,2026-04-24T07:00:00
+106,24,swati_logistics,Operates at 96.5% CEC weighted efficiency. Much safer than running high-voltage DC lines through the attic.,2026-03-25T19:00:00
+107,24,karan_energy,Great cloud monitoring app with per-panel yield metrics updated automatically every 5 minutes.,2026-05-09T15:00:00
+108,25,neha_industrial,Solid rotary switch with positive detent lock. Zero contact resistance measured under 400A continuous draw.,2026-02-17T06:00:00
+109,25,vikram_powersystems,Lockout-tagout (LOTO) hole accommodates standard safety padlocks for complete safety compliance.,2026-02-28T09:00:00
+110,25,anand_facilities,Vapor-tight ignition-protected design is completely safe for enclosed marine battery compartments.,2026-02-06T06:00:00
+111,26,priya_consultant,Dramatically reduced total harmonic distortion on our VFD motor bus from 18% down to 3.2%.,2026-03-03T23:00:00
+112,26,sunita_eng,"Power factor improved from 0.82 to 0.98, completely eliminating monthly power factor utility penalties.",2026-06-05T03:00:00
+113,26,siddharth_m,Tough metal enclosure with thermostatic forced-air cooling that maintains optimal IGBT temperature.,2026-06-03T14:00:00
+114,27,manoj_backup,"Includes 1000V DC fuses, lightning surge arrester, and positive disconnect switch pre-wired neatly.",2026-07-06T07:00:00
+115,27,priya_consultant,Waterproof IP66 enclosure with strain-relief cable glands included made field termination quick and tidy.,2026-05-05T04:00:00
+116,27,meera_greenenergy,Transparent inspection window allows quick visual checks of fuse status without opening the panel.,2026-04-02T05:00:00
+117,28,rohit_testing,Hot-swappable module slotted right into our telecom DC power distribution shelf with zero downtime.,2026-06-12T17:00:00
+118,28,pooja_operations,Ultra-high 96% conversion efficiency keeps cooling requirements low in small base station shelters.,2026-02-12T07:00:00
+119,28,manoj_backup,Operates continuously through ambient temperatures up to 65C without thermal derating.,2026-07-05T21:00:00
+120,29,vikram_powersystems,Partial State of Charge (PSoC) performance is vastly better than conventional AGM batteries.,2026-07-19T01:00:00
+121,29,tarun_gridguard,No sulfation buildup even when operated in daily partial charge cycles for months.,2026-06-11T13:00:00
+122,29,pooja_operations,Gives us dependable 7-hour backup for critical security and telecom repeater towers.,2026-03-12T22:00:00
+123,30,anand_facilities,Class A accuracy according to IEC 61000-4-30 standard. Captured transient sags and swells instantly.,2026-05-17T05:00:00
+124,30,vikram_powersystems,Web dashboard and Modbus TCP export make compliance reporting and power auditing effortless.,2026-07-03T18:00:00
+125,30,harish_engineer,"High-resolution color screen displays phasor diagrams, harmonics spectrum, and phase unbalance ratios.",2026-04-02T02:00:00
+126,30,amit_sharma,Indispensable tool for our electrical audit team. Caught three critical grounding anomalies on day one.,2026-05-26T20:00:00

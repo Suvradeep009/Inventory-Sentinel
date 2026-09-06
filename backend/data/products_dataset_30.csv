@@ -1,0 +1,31 @@
+id,name,sku,category,order_id,price,stock,status
+1,Inverter,PWR-INV-001,cat1,#7676,24999.0,45,In Stock
+2,Battery,PWR-BAT-002,cat2,#7677,16499.0,120,Restock Halted
+3,Generator,PWR-GEN-003,cat2,#7678,52999.0,28,Order Surge
+4,Charger,PWR-CHG-004,cat3,#7679,4299.0,310,In Stock
+5,Power,PWR-SUP-005,cat4,#7680,8499.0,215,In Stock
+6,Solar Panel 540W,PWR-SOL-006,cat1,#7681,17500.0,85,Order Surge
+7,Voltage Stabilizer 5kVA,PWR-STB-007,cat4,#7682,7200.0,140,In Stock
+8,Online UPS 3kVA,PWR-UPS-008,cat1,#7683,38999.0,35,Restock Halted
+9,Hybrid Solar Inverter 5kW,PWR-HYB-009,cat1,#7684,58000.0,60,Order Surge
+10,Tubular Deep-Cycle Battery 220Ah,PWR-TUB-010,cat2,#7685,19200.0,95,In Stock
+11,Dual-Fuel Portable Generator 3.5kW,PWR-PGEN-011,cat2,#7686,46500.0,40,In Stock
+12,MPPT Charge Controller 60A,PWR-MPPT-012,cat3,#7687,9800.0,175,In Stock
+13,Industrial Surge Protector SPD,PWR-SPD-013,cat4,#7688,3450.0,420,In Stock
+14,Automatic Transfer Switch ATS 100A,PWR-ATS-014,cat5,#7689,13900.0,55,In Stock
+15,Isolation Transformer 10kVA,PWR-TRF-015,cat5,#7690,79000.0,18,Low Stock
+16,Smart Bi-Directional Energy Meter,PWR-MTR-016,cat5,#7691,5100.0,260,In Stock
+17,EV Wallbox Fast Charger 22kW,PWR-EVW-017,cat3,#7692,48500.0,50,Order Surge
+18,Rackmount Intelligent PDU,PWR-PDU-018,cat4,#7693,11200.0,130,In Stock
+19,Diesel Standby Generator 15kVA,PWR-DGN-019,cat2,#7694,138000.0,12,Low Stock
+20,LiFePO4 Lithium Battery Pack 48V,PWR-LFP-020,cat2,#7695,74500.0,70,Order Surge
+21,Wind Turbine Grid-Tie Inverter 10kW,PWR-WND-021,cat1,#7696,112000.0,15,In Stock
+22,Supercapacitor Pulse Storage 48V,PWR-CAP-022,cat2,#7697,34500.0,50,Order Surge
+23,Industrial Frequency Converter 50/60Hz,PWR-FRQ-023,cat5,#7698,87000.0,22,In Stock
+24,Solar Microinverter 800W Dual,PWR-MIC-024,cat1,#7699,14800.0,110,Order Surge
+25,Heavy-Duty Battery Switch 500A,PWR-DSW-025,cat4,#7700,2850.0,380,In Stock
+26,Active Harmonic Filter 25kVAR,PWR-HFL-026,cat5,#7701,64000.0,19,In Stock
+27,Solar DC Combiner Box 6-String,PWR-CMB-027,cat1,#7702,6900.0,160,In Stock
+28,Telecom Rectifier Module 48V/50A,PWR-RCT-028,cat3,#7703,21500.0,75,In Stock
+29,Lead-Carbon Deep Cycle Battery 200Ah,PWR-LCB-029,cat2,#7704,23900.0,85,In Stock
+30,Three-Phase Power Quality Analyzer,PWR-PQA-030,cat5,#7705,42000.0,30,Order Surge
