@@ -8,7 +8,10 @@ import json
 from datetime import datetime, timedelta
 import random
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "inventory.db")
+DB_PATH = os.environ.get(
+    "INVENTORY_DB_PATH",
+    os.path.join(os.path.dirname(__file__), "inventory.db"),
+)
 
 
 def get_connection():
