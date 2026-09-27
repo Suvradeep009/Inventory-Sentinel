@@ -391,44 +391,77 @@ interface StoreData {
   lastSyncedAt: string;
 }
 
+let _memoryStore: StoreData | null = null;
+
+const BUNDLED_DATA_FILE = path.join(process.cwd(), '.data', 'inventory_v2.json');
+const WRITABLE_DIR = process.env.VERCEL ? path.join('/tmp', '.data') : path.join(process.cwd(), '.data');
+const WRITABLE_FILE = path.join(WRITABLE_DIR, 'inventory_v2.json');
+
 function ensureDataDir(): void {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(WRITABLE_DIR)) {
+      fs.mkdirSync(WRITABLE_DIR, { recursive: true });
+    }
+  } catch (err) {
+    console.warn('Could not create writable data dir:', err);
   }
 }
 
 export function loadStore(): StoreData {
-  ensureDataDir();
+  if (_memoryStore && _memoryStore.products.length > 0) {
+    return _memoryStore;
+  }
+
+  // 1. Try reading from writable /tmp path
   try {
-    if (fs.existsSync(DATA_FILE)) {
-      const raw = fs.readFileSync(DATA_FILE, 'utf-8');
+    if (fs.existsSync(WRITABLE_FILE)) {
+      const raw = fs.readFileSync(WRITABLE_FILE, 'utf-8');
       const parsed = JSON.parse(raw);
       if (parsed && Array.isArray(parsed.products) && parsed.products.length > 0) {
+        _memoryStore = parsed;
         return parsed;
       }
     }
   } catch {
-    // Return seed if file read fails
+    // Ignore and fallback
   }
 
+  // 2. Try reading from bundled static path in repository
+  try {
+    if (fs.existsSync(BUNDLED_DATA_FILE)) {
+      const raw = fs.readFileSync(BUNDLED_DATA_FILE, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (parsed && Array.isArray(parsed.products) && parsed.products.length > 0) {
+        _memoryStore = parsed;
+        return parsed;
+      }
+    }
+  } catch {
+    // Ignore and fallback
+  }
+
+  // 3. Fallback to hardcoded initial seeded products
   const initialData: StoreData = {
     products: INITIAL_SEEDED_PRODUCTS,
     lastSyncedAt: new Date().toISOString(),
   };
+  _memoryStore = initialData;
   saveStore(initialData.products);
   return initialData;
 }
 
 export function saveStore(products: Product[]): void {
+  const data: StoreData = {
+    products,
+    lastSyncedAt: new Date().toISOString(),
+  };
+  _memoryStore = data;
+
   ensureDataDir();
   try {
-    const data: StoreData = {
-      products,
-      lastSyncedAt: new Date().toISOString(),
-    };
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+    fs.writeFileSync(WRITABLE_FILE, JSON.stringify(data, null, 2), 'utf-8');
   } catch (err) {
-    console.error('Error saving store:', err);
+    console.warn('Could not persist store to disk (in-memory store active):', err);
   }
 }
 
