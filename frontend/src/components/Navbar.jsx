@@ -3,10 +3,10 @@ import { NavLink, Link } from 'react-router-dom';
 import { getKeyStatus } from '../api';
 
 const links = [
-  { to: '/',          label: '01. Home Hub'         },
-  { to: '/sentiment', label: '02. NLP Sentiment'    },
-  { to: '/demand',    label: '03. Demand Alerts'    },
-  { to: '/insights',  label: '04. RAG Insights'     },
+  { to: '/',          label: '01. Home Hub'          },
+  { to: '/sentiment', label: '02. Customer Feedback' },
+  { to: '/demand',    label: '03. Restock Signals'   },
+  { to: '/insights',  label: '04. Smart Search'      },
 ];
 
 export default function Navbar() {
@@ -49,10 +49,10 @@ export default function Navbar() {
               className={`navbar__status-pill ${
                 keyInfo.has_key ? '' : 'navbar__status-pill--fallback'
               }`}
-              title={keyInfo.has_key ? 'Gemini 3.6 Flash Connected' : 'Heuristic Fallback Mode'}
+              title={keyInfo.has_key ? 'Assistant Connected' : 'Standard Rules Mode'}
             >
               <span className="navbar__status-dot" />
-              <span>{keyInfo.has_key ? 'GEMINI 3.6 FLASH' : 'KEY HEURISTIC'}</span>
+              <span>{keyInfo.has_key ? 'ASSISTANT CONNECTED' : 'STANDARD MODE'}</span>
             </div>
           )}
         </div>

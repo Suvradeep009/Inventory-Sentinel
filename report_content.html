@@ -1,0 +1,947 @@
+<hr>
+<h2>pdf_options:
+  format: A4
+  margin: 30mm 25mm 30mm 25mm
+  printBackground: true
+  displayHeaderFooter: true
+  headerTemplate: &#39;<div style="font-size:7px; font-family:monospace; width:100%; text-align:center; color:#999;">INVENTORY SENTINEL — TECHNICAL ARCHITECTURE REPORT</div>&#39;
+  footerTemplate: &#39;<div style="font-size:7px; font-family:monospace; width:100%; text-align:center; color:#999;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>&#39;
+stylesheet: <a href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css</a>
+body_class: markdown-body</h2>
+<h1>Inventory Sentinel</h1>
+<h2>Technical Architecture &amp; AI Pipeline Report</h2>
+<p><strong>Version:</strong> 1.0.0<br><strong>Date:</strong> September 2026<br><strong>Classification:</strong> Internal Technical Documentation<br><strong>Author:</strong> Project Engineering Team<br><strong>Repository:</strong> <a href="https://github.com/Suvradeep009/Inventory-Sentinel">github.com/Suvradeep009/Inventory-Sentinel</a><br><strong>Production URL:</strong> <a href="https://inventory-sentinel.vercel.app">inventory-sentinel.vercel.app</a></p>
+<hr>
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#1-executive-summary">Executive Summary</a></li>
+<li><a href="#2-uiux-design-philosophy">UI/UX Design Philosophy</a></li>
+<li><a href="#3-system-architecture-overview">System Architecture Overview</a></li>
+<li><a href="#4-core-system-modules--the-four-routes">Core System Modules — The Four Routes</a><ul>
+<li>4.1 <a href="#41-data-synchronization-hub-home">Data Synchronization Hub (Home)</a></li>
+<li>4.2 <a href="#42-nlp-sentiment-engine">NLP Sentiment Engine</a></li>
+<li>4.3 <a href="#43-automated-demand-alerting">Automated Demand Alerting</a></li>
+<li>4.4 <a href="#44-insights-rag-terminal">Insights RAG Terminal</a></li>
+</ul>
+</li>
+<li><a href="#5-the-tech-stack">The Tech Stack</a></li>
+<li><a href="#6-data-architecture--schema">Data Architecture &amp; Schema</a></li>
+<li><a href="#7-ai-integration-strategy">AI Integration Strategy</a></li>
+<li><a href="#8-deployment-architecture">Deployment Architecture</a></li>
+<li><a href="#9-api-reference-summary">API Reference Summary</a></li>
+<li><a href="#10-appendices">Appendices</a></li>
+</ol>
+<hr>
+<h2>1. Executive Summary</h2>
+<p><strong>Inventory Sentinel</strong> is an AI-powered autonomous inventory dispatch platform that merges traditional relational state management (SQLite-backed CRUD) with a real-time Large Language Model (LLM) sentiment analysis pipeline. The system addresses a critical gap in conventional inventory management software: the inability to incorporate qualitative customer feedback into quantitative procurement decisions.</p>
+<p>The platform ingests hardware product catalogs and customer review corpora from vendor APIs, classifies each review into a deterministic 5-tier sentiment taxonomy using Google Gemini&#39;s structured JSON output mode, and computes automated restock signals based on mathematically defined thresholds. A secondary Retrieval-Augmented Generation (RAG) pipeline enables natural-language executive queries against the review corpus, producing grounded conversational summaries without hallucination.</p>
+<h3>Key Innovation</h3>
+<p>The core differentiator is the <strong>closed-loop sentiment-to-signal pipeline</strong>: raw unstructured customer text is transformed through an LLM classification layer into three discrete, actionable inventory signals — <code>HALT_RESTOCK</code>, <code>INCREASE_ORDER</code>, or <code>HOLD_STEADY</code> — which directly inform procurement workflows. This eliminates the traditional lag between post-purchase qualitative feedback and upstream supply chain response.</p>
+<h3>Capabilities at a Glance</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product catalog management</td>
+<td>SQLite CRUD with CSV/JSON bulk upload</td>
+</tr>
+<tr>
+<td>Vendor data synchronization</td>
+<td>REST API ingestion with live stock reconciliation</td>
+</tr>
+<tr>
+<td>NLP sentiment classification</td>
+<td>Gemini Flash structured JSON — 5-tier taxonomy</td>
+</tr>
+<tr>
+<td>Automated demand signaling</td>
+<td>Threshold-based conversion (qualitative → quantitative)</td>
+</tr>
+<tr>
+<td>Conversational RAG insights</td>
+<td>Metadata-filtered retrieval + LLM synthesis</td>
+</tr>
+<tr>
+<td>Fallback resilience</td>
+<td>Keyword-heuristic classifier when API is unavailable</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. UI/UX Design Philosophy</h2>
+<h3>The Editorial Neo-Brutalist Aesthetic</h3>
+<p>Inventory Sentinel&#39;s frontend deliberately rejects the prevailing trends of gamified dashboards, gradient-heavy glassmorphism, and dark-mode SaaS templates. Instead, it adopts a <strong>print-inspired, grid-locked editorial broadsheet</strong> design language optimized for data legibility and administrative focus.</p>
+<h3>Design Rationale</h3>
+<p>Inventory management is an inherently analytical discipline. Operators need to scan high-density tabular data, compare polarity distributions across products, and act on color-coded urgency signals — often under time pressure during procurement cycles. The editorial approach treats each screen as a <strong>newspaper front page</strong>: structured columns, clear typographic hierarchy, and deliberate use of whitespace to prevent cognitive overload.</p>
+<h3>Design System Tokens</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--bg-paper</code></td>
+<td><code>#F7F4EB</code></td>
+<td>Organic cream paper surface — reduces eye strain on data-heavy screens</td>
+</tr>
+<tr>
+<td><code>--ink-black</code></td>
+<td><code>#111111</code></td>
+<td>High-contrast editorial ink for maximum readability</td>
+</tr>
+<tr>
+<td><code>--mint-accent</code></td>
+<td><code>#88E6B8</code></td>
+<td>Positive sentiment indicator (Good / Very Good / Increase Order)</td>
+</tr>
+<tr>
+<td><code>--coral-accent</code></td>
+<td><code>#FF9E9E</code></td>
+<td>Negative sentiment indicator (Bad / Very Bad / Halt Restock)</td>
+</tr>
+<tr>
+<td><code>--shadow-card</code></td>
+<td><code>3px 3px 0px #111</code></td>
+<td>Neo-brutalist offset shadow — tactile depth without blur</td>
+</tr>
+<tr>
+<td><code>--radius-card</code></td>
+<td><code>14px</code></td>
+<td>Modern structured SaaS card rounding</td>
+</tr>
+</tbody></table>
+<h3>Typography Stack</h3>
+<p>The platform employs a four-tier typographic system to establish visual hierarchy:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Typeface</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Display headings</td>
+<td><strong>Syne 700/800</strong></td>
+<td>Route titles, page mastheads — geometric, bold, editorial</td>
+</tr>
+<tr>
+<td>Serif accents</td>
+<td><strong>Playfair Display 700/900</strong></td>
+<td>Signal names, emphasis blocks — classical authority</td>
+</tr>
+<tr>
+<td>Body text</td>
+<td><strong>Plus Jakarta Sans 400–800</strong></td>
+<td>Paragraphs, labels, navigation — clean geometric sans-serif</td>
+</tr>
+<tr>
+<td>Data / Monospace</td>
+<td><strong>JetBrains Mono 400–700</strong></td>
+<td>SKU codes, API status, terminal output, numerical data</td>
+</tr>
+</tbody></table>
+<h3>Component Architecture</h3>
+<p>The frontend is built with <strong>React 19</strong> and <strong>Vite 8</strong>, using a component-based architecture:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Navbar</code></td>
+<td><code>Navbar.jsx</code></td>
+<td>Sticky masthead with 4 numbered navigation links and live Gemini status pill</td>
+</tr>
+<tr>
+<td><code>SignalCard</code></td>
+<td><code>SignalCard.jsx</code></td>
+<td>Demand signal display card with color-coded action buttons</td>
+</tr>
+<tr>
+<td><code>SentimentBadge</code></td>
+<td><code>SentimentBadge.jsx</code></td>
+<td>Tier badge component (VERY_BAD through VERY_GOOD)</td>
+</tr>
+<tr>
+<td><code>ReviewTable</code></td>
+<td><code>ReviewTable.jsx</code></td>
+<td>Tabular review display with sentiment classifications</td>
+</tr>
+<tr>
+<td><code>TerminalInput</code></td>
+<td><code>TerminalInput.jsx</code></td>
+<td>Monospace terminal-style input for RAG queries</td>
+</tr>
+<tr>
+<td><code>EmptyState</code></td>
+<td><code>EmptyState.jsx</code></td>
+<td>Placeholder component for empty data views</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. System Architecture Overview</h2>
+<pre><code>┌──────────────────────────────────────────────────────────────────────────┐
+│                         INVENTORY SENTINEL                              │
+│                    Architecture Overview Diagram                        │
+├──────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│   ┌───────────────┐     HTTP/JSON      ┌──────────────────────┐         │
+│   │  React 19 SPA │ ◄──────────────► │   FastAPI Backend     │         │
+│   │  (Vite 8)     │    /api/*          │   (Python 3.12)      │         │
+│   │               │                    │                      │         │
+│   │  4 Routes:    │                    │  ┌────────────────┐  │         │
+│   │  • Home Hub   │                    │  │  nlp_engine.py │  │         │
+│   │  • Sentiment  │                    │  │  (Classifier)  │──┼──►Gemini│
+│   │  • Demand     │                    │  └────────────────┘  │  Flash  │
+│   │  • Insights   │                    │  ┌────────────────┐  │         │
+│   │               │                    │  │  rag_engine.py │  │         │
+│   │               │                    │  │  (Retrieval)   │──┘         │
+│   │               │                    │  └────────────────┘            │
+│   │               │                    │  ┌────────────────┐            │
+│   │               │                    │  │  database.py   │            │
+│   │               │                    │  │  (SQLite ORM)  │            │
+│   └───────────────┘                    │  └────────────────┘            │
+│                                        └──────────────────────┘         │
+└──────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>Request Flow</h3>
+<ol>
+<li><strong>Frontend</strong> sends HTTP requests to <code>/api/*</code> endpoints</li>
+<li><strong>FastAPI</strong> routes the request to the appropriate handler</li>
+<li><strong>NLP Engine</strong> classifies reviews via Gemini Flash or falls back to keyword heuristics</li>
+<li><strong>RAG Engine</strong> retrieves relevant review chunks, applies metadata filters, and synthesizes answers</li>
+<li><strong>Database</strong> provides persistent storage via SQLite with auto-seeding on initialization</li>
+</ol>
+<hr>
+<h2>4. Core System Modules — The Four Routes</h2>
+<h3>4.1 Data Synchronization Hub (Home)</h3>
+<p><strong>Route:</strong> <code>/</code> (Home Hub)<br><strong>Backend Endpoints:</strong> <code>GET /api/vendor-data</code>, <code>POST /api/vendor-data/apply</code>, <code>POST /api/analyze</code><br><strong>Component:</strong> <code>HomePage.jsx</code> (759 lines)</p>
+<h4>Purpose</h4>
+<p>The Home Hub serves as the operational command center, implementing a <strong>three-phase data synchronization pipeline</strong> that fetches, classifies, and commits vendor catalog data in a single automated workflow.</p>
+<h4>Synchronization Pipeline</h4>
+<p>The <code>LiveStoreSyncModule</code> component orchestrates the following pipeline:</p>
+<p><strong>Phase 1 — FETCHING:</strong> The system requests raw catalog payload from a configurable vendor endpoint. The default internal endpoint (<code>/api/vendor-data</code>) provides a simulated &quot;Apex Power &amp; Grid External Vendor Feed (v2.4)&quot; containing 5 hardware products (Inverter, Battery, Generator, Charger, Power Supply) and 35 domain-specific customer reviews. Operators can override this URL to point at an external vendor REST API.</p>
+<p><strong>Phase 2 — ANALYZING:</strong> All 35 review texts are extracted and dispatched to the Gemini NLP classification engine via <code>POST /api/analyze</code>. The engine processes reviews in batches of 10 using structured JSON output, returning a 5-tier sentiment classification with confidence scores for each review.</p>
+<p><strong>Phase 3 — COMMITTING:</strong> Classified data is committed to the SQLite database via <code>POST /api/vendor-data/apply</code>. The endpoint performs an upsert: matching products by SKU are updated with fresh stock counts; new products are inserted. Reviews are appended to the review table. The in-memory sentiment cache is fully invalidated to force recalculation of demand signals.</p>
+<h4>Additional Capabilities</h4>
+<ul>
+<li><strong>Manual Product Entry:</strong> A form for adding individual stock items with auto-generated SKU codes</li>
+<li><strong>Bulk CSV/JSON Upload:</strong> <code>POST /api/upload/products</code> and <code>POST /api/upload/reviews</code> for file-based data ingestion</li>
+<li><strong>System Diagnostics Dashboard:</strong> Real-time display of total products, reviews, and signal distribution across the catalog</li>
+</ul>
+<hr>
+<h3>4.2 NLP Sentiment Engine</h3>
+<p><strong>Route:</strong> <code>/sentiment</code><br><strong>Backend Module:</strong> <code>nlp_engine.py</code> (398 lines)<br><strong>Backend Endpoint:</strong> <code>GET /api/products/{id}/sentiment</code><br><strong>Component:</strong> <code>SentimentPage.jsx</code> (401 lines)</p>
+<h4>Prompt Engineering Strategy</h4>
+<p>The NLP engine employs a <strong>strict structured output</strong> strategy, leveraging Gemini Flash&#39;s <code>response_mime_type: &quot;application/json&quot;</code> parameter to force the LLM into deterministic, parseable classifications rather than free-form text.</p>
+<h5>System Prompt (Verbatim)</h5>
+<pre><code>You are a strict sentiment classifier for customer product reviews.
+Classify each review into EXACTLY one of these five tiers:
+  VERY_BAD  — severe complaints, product failure, would not recommend
+  BAD       — clear disappointment, notable issues, negative overall
+  NEUTRAL   — mixed, average, &quot;gets the job done&quot;, no strong opinion
+  GOOD      — positive experience, satisfied, recommends
+  VERY_GOOD — exceptional praise, loves product, would strongly recommend
+
+Return a JSON array with one object per review, in the same order as input.
+Each object must have exactly these keys:
+  &quot;tier&quot;       : one of [VERY_BAD, BAD, NEUTRAL, GOOD, VERY_GOOD]
+  &quot;confidence&quot; : float between 0.0 and 1.0
+
+Do NOT include any explanation, markdown, or extra keys. Return ONLY the JSON array.
+</code></pre>
+<h5>Design Decisions</h5>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>5-tier taxonomy</strong> (not 3 or binary)</td>
+<td>Captures gradient severity — distinguishes &quot;slightly disappointed&quot; from &quot;product is a safety hazard&quot;</td>
+</tr>
+<tr>
+<td><strong>JSON schema enforcement</strong></td>
+<td><code>response_mime_type: &quot;application/json&quot;</code> eliminates markdown wrapping, prose preambles, and schema drift</td>
+</tr>
+<tr>
+<td><strong>Temperature = 0.1</strong></td>
+<td>Near-deterministic output — repeated classifications of the same review text yield identical tier assignments</td>
+</tr>
+<tr>
+<td><strong>Confidence clamping</strong> (<code>min 0.50, max 0.99</code>)</td>
+<td>Prevents the model from expressing pathological certainty (1.0) or uncertainty below the noise floor</td>
+</tr>
+<tr>
+<td><strong>Batch processing</strong> (chunks of 10)</td>
+<td>Balances API throughput against prompt context window utilization; prevents token overflow</td>
+</tr>
+</tbody></table>
+<h5>Dual-Engine Architecture</h5>
+<p>The NLP engine implements a <strong>graceful degradation</strong> pattern:</p>
+<ol>
+<li><strong>Primary Engine:</strong> Google Gemini Flash (structured JSON classification)</li>
+<li><strong>Fallback Engine:</strong> Keyword-weighted heuristic classifier</li>
+</ol>
+<p>The heuristic fallback uses four curated word banks (153 total keywords across VERY_POSITIVE, POSITIVE, NEGATIVE, and VERY_NEGATIVE categories plus NEUTRAL signals) with weighted scoring:</p>
+<pre><code class="language-python">scores = {
+    &quot;VERY_GOOD&quot;: vp * 3.0 + p * 0.5,
+    &quot;GOOD&quot;:      p  * 2.5 + vp * 0.8,
+    &quot;NEUTRAL&quot;:   ne * 3.0 + 1.0,     # +1.0 bias toward neutral
+    &quot;BAD&quot;:       n  * 2.5 + vn * 0.8,
+    &quot;VERY_BAD&quot;:  vn * 3.0 + n * 0.5,
+}
+</code></pre>
+<p>A deterministic seed derived from the review text&#39;s MD5 hash ensures that repeated heuristic classifications of identical text produce identical results — critical for cache coherence.</p>
+<h5>Sentiment Visualization</h5>
+<p>The Sentiment Page presents classified data in two view modes:</p>
+<ul>
+<li><strong>5-Column Buckets:</strong> Visual column layout with reviews sorted into their respective tier bins, color-coded with coral (negative) and mint (positive) accents</li>
+<li><strong>Magazine Data Table:</strong> Tabular view with per-review tier badges, confidence percentages, and reviewer attribution</li>
+</ul>
+<p>Each product displays four summary metrics:</p>
+<ul>
+<li><strong>Overall Rating</strong> (weighted average on a 1.0–5.0 scale using tier weights: VERY_BAD=1, BAD=2, NEUTRAL=3, GOOD=4, VERY_GOOD=5)</li>
+<li><strong>Autonomous Signal</strong> (HALT_RESTOCK / INCREASE_ORDER / HOLD_STEADY)</li>
+<li><strong>Negative Ratio</strong> (percentage of VERY_BAD + BAD reviews, threshold indicator at ≥45%)</li>
+<li><strong>Positive Ratio</strong> (percentage of GOOD + VERY_GOOD reviews, threshold indicator at ≥65%)</li>
+</ul>
+<hr>
+<h3>4.3 Automated Demand Alerting</h3>
+<p><strong>Route:</strong> <code>/demand</code><br><strong>Backend Endpoint:</strong> <code>GET /api/inventory</code><br><strong>Component:</strong> <code>DemandPage.jsx</code> (270 lines)</p>
+<h4>Signal Computation Algorithm</h4>
+<p>The <code>compute_restock_signal()</code> function in <code>nlp_engine.py</code> converts qualitative sentiment distributions into one of three discrete, actionable inventory signals:</p>
+<pre><code class="language-python">def compute_restock_signal(distribution: dict, total: int) -&gt; str:
+    if total == 0:
+        return &quot;HOLD_STEADY&quot;
+
+    negative_pct = (distribution[&quot;VERY_BAD&quot;] + distribution[&quot;BAD&quot;]) / total
+    positive_pct = (distribution[&quot;GOOD&quot;] + distribution[&quot;VERY_GOOD&quot;]) / total
+
+    if negative_pct &gt;= 0.45:
+        return &quot;HALT_RESTOCK&quot;
+    elif positive_pct &gt;= 0.65:
+        return &quot;INCREASE_ORDER&quot;
+    return &quot;HOLD_STEADY&quot;
+</code></pre>
+<h4>Signal Definitions &amp; Thresholds</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Condition</th>
+<th>Color Code</th>
+<th>Procurement Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>HALT_RESTOCK</strong></td>
+<td>(VERY_BAD% + BAD%) ≥ 45%</td>
+<td>🟥 Coral (<code>#FF9E9E</code>)</td>
+<td>Freeze all purchase orders; initiate QA audit</td>
+</tr>
+<tr>
+<td><strong>INCREASE_ORDER</strong></td>
+<td>(GOOD% + VERY_GOOD%) ≥ 65%</td>
+<td>🟩 Mint (<code>#88E6B8</code>)</td>
+<td>Accelerate procurement volume +35%</td>
+</tr>
+<tr>
+<td><strong>HOLD_STEADY</strong></td>
+<td>Everything else</td>
+<td>⬜ Neutral (<code>#E5E2D9</code>)</td>
+<td>Maintain current baseline schedules</td>
+</tr>
+</tbody></table>
+<h4>Mathematical Properties</h4>
+<ul>
+<li><strong>Mutual exclusivity:</strong> The three signals are mutually exclusive by construction — <code>HALT_RESTOCK</code> is evaluated first (priority override), preventing a product with 50% negative and 70% positive from receiving a contradictory <code>INCREASE_ORDER</code> signal.</li>
+<li><strong>Asymmetric thresholds:</strong> The negative threshold (45%) is deliberately lower than the positive threshold (65%). This reflects a risk-averse procurement philosophy: it takes fewer bad reviews to halt restocking than good reviews to increase orders. Customer complaints carry higher signal weight than praise.</li>
+<li><strong>Zero-review default:</strong> Products with no reviews default to <code>HOLD_STEADY</code> rather than <code>INCREASE_ORDER</code>, implementing a conservative &quot;do not act without evidence&quot; policy.</li>
+</ul>
+<h4>Visualization</h4>
+<p>The Demand Alerts page renders:</p>
+<ul>
+<li><strong>Signal distribution summary:</strong> Count of products in each signal category</li>
+<li><strong>Filterable inventory grid:</strong> <code>SignalCard</code> components with color-coded borders and one-click action dispatch buttons</li>
+<li><strong>Recharts bar chart:</strong> Stacked visualization of negative%, positive%, and stock levels across all products</li>
+</ul>
+<hr>
+<h3>4.4 Insights RAG Terminal</h3>
+<p><strong>Route:</strong> <code>/insights</code> (aliased as <code>/rag</code>)<br><strong>Backend Module:</strong> <code>rag_engine.py</code> (301 lines)<br><strong>Backend Endpoint:</strong> <code>POST /api/rag</code><br><strong>Component:</strong> <code>RagPage.jsx</code> (312 lines)</p>
+<h4>RAG Pipeline Architecture</h4>
+<p>The Retrieval-Augmented Generation pipeline implements a <strong>metadata pre-filtering</strong> strategy that ensures the LLM only synthesizes answers from reviews belonging to the queried product — preventing cross-product hallucination.</p>
+<h5>Stage 1 — Product Extraction</h5>
+<pre><code class="language-python">def extract_target_product(query: str, product_id: int | None = None):
+</code></pre>
+<p>The system extracts the target product from the user&#39;s natural language query using three matching strategies (in priority order):</p>
+<ol>
+<li><strong>Explicit product_id</strong> parameter (if provided by frontend dropdown)</li>
+<li><strong>Name substring match</strong> against the product catalog</li>
+<li><strong>SKU / Order ID match</strong> against structured identifiers</li>
+<li><strong>Numeric pattern match</strong> (e.g., &quot;product #3&quot; → product_id 3)</li>
+</ol>
+<h5>Stage 2 — Metadata Pre-Filter + Retrieval</h5>
+<pre><code class="language-python">def simulate_retrieval(query: str, product_id: int | None = None):
+</code></pre>
+<p>Once a target product is identified, the retriever applies a <strong>metadata pre-filter</strong> (<code>where={&#39;product_name&#39;: target_product}</code>) to scope the chunk universe exclusively to that product&#39;s reviews. This is functionally equivalent to a vector database&#39;s metadata filtering but implemented without an external embedding store.</p>
+<p>Each review is chunked with rich metadata:</p>
+<pre><code class="language-python">{
+    &quot;text&quot;:         review[&quot;text&quot;],
+    &quot;product_name&quot;: product[&quot;name&quot;],
+    &quot;sku&quot;:          product[&quot;sku&quot;],
+    &quot;reviewer&quot;:     review[&quot;reviewer&quot;],
+    &quot;tier&quot;:         sentiment[&quot;tier&quot;],       # Heuristic pre-classification
+    &quot;confidence&quot;:   sentiment[&quot;confidence&quot;],
+    &quot;timestamp&quot;:    review[&quot;timestamp&quot;],
+}
+</code></pre>
+<p><strong>Relevance scoring</strong> uses keyword-overlap with stopword filtering:</p>
+<pre><code class="language-python">score = overlap / (len(query_words) + 0.5 * len(chunk_words - query_words) + 1e-9)
+</code></pre>
+<p><strong>Polarity boosting</strong> adjusts relevance based on detected query intent:</p>
+<ul>
+<li>Queries containing &quot;bad&quot;, &quot;fail&quot;, &quot;problem&quot; → +0.35 boost for VERY_BAD/BAD chunks</li>
+<li>Queries containing &quot;good&quot;, &quot;great&quot;, &quot;excellent&quot; → +0.35 boost for VERY_GOOD/GOOD chunks</li>
+<li>Queries containing &quot;halt&quot;, &quot;restock&quot; → +0.25 boost for negative chunks</li>
+<li>Queries containing &quot;increase&quot;, &quot;order&quot;, &quot;surge&quot; → +0.25 boost for positive chunks</li>
+</ul>
+<p>The <strong>top 3 chunks</strong> by relevance are selected for synthesis.</p>
+<h5>Stage 3 — Conversational Executive Synthesis</h5>
+<p>The system prompt instructs Gemini to produce <strong>natural, professional executive summaries</strong>:</p>
+<pre><code>You are an inventory analyst. Based on the retrieved review chunks, write a brief,
+professional executive summary of the customer sentiment. Do not reference chunks,
+confidence scores, or raw data formatting. Speak naturally.
+</code></pre>
+<p>The prompt template constructs a grounded context window:</p>
+<pre><code>Target Equipment: {product_name} (Order ID: {order_id}, SKU: {sku})
+
+Customer Feedback Samples:
+- &quot;{chunk_1_text}&quot; (Product: {product_name})
+- &quot;{chunk_2_text}&quot; (Product: {product_name})
+- &quot;{chunk_3_text}&quot; (Product: {product_name})
+
+Inventory Manager Query:
+{user_query}
+
+Executive Summary:
+</code></pre>
+<p>This ensures the LLM&#39;s response is <strong>grounded exclusively in retrieved evidence</strong> rather than parametric knowledge.</p>
+<h5>Frontend Streaming Simulation</h5>
+<p>The RAG page simulates character-by-character streaming of the LLM response using a client-side interval that reveals 8 characters every 14ms, creating a typewriter effect that communicates active synthesis to the operator.</p>
+<hr>
+<h2>5. The Tech Stack</h2>
+<h3>Frontend</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>React</strong></td>
+<td>19.2.8</td>
+<td>Component-based UI framework</td>
+</tr>
+<tr>
+<td><strong>React Router DOM</strong></td>
+<td>7.18.3</td>
+<td>Client-side SPA routing (4 routes + alias)</td>
+</tr>
+<tr>
+<td><strong>Vite</strong></td>
+<td>8.2.2</td>
+<td>Build tool with HMR, production bundling</td>
+</tr>
+<tr>
+<td><strong>Recharts</strong></td>
+<td>3.10.1</td>
+<td>Declarative charting (demand visualization)</td>
+</tr>
+<tr>
+<td><strong>Oxlint</strong></td>
+<td>1.79.0</td>
+<td>Rust-based linter for code quality</td>
+</tr>
+<tr>
+<td><strong>Google Fonts</strong></td>
+<td>—</td>
+<td>Syne, Playfair Display, Plus Jakarta Sans, JetBrains Mono</td>
+</tr>
+</tbody></table>
+<h3>Backend</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Python</strong></td>
+<td>3.11+</td>
+<td>Server runtime</td>
+</tr>
+<tr>
+<td><strong>FastAPI</strong></td>
+<td>0.115.0</td>
+<td>ASGI web framework with auto-generated OpenAPI docs</td>
+</tr>
+<tr>
+<td><strong>Uvicorn</strong></td>
+<td>0.30.0</td>
+<td>Lightning-fast ASGI server</td>
+</tr>
+<tr>
+<td><strong>SQLite</strong></td>
+<td>Built-in</td>
+<td>Embedded relational database (zero-config)</td>
+</tr>
+<tr>
+<td><strong>Pydantic</strong></td>
+<td>(via FastAPI)</td>
+<td>Request/response validation via type-annotated models</td>
+</tr>
+<tr>
+<td><strong>python-dotenv</strong></td>
+<td>1.0+</td>
+<td>Environment variable management</td>
+</tr>
+<tr>
+<td><strong>python-multipart</strong></td>
+<td>0.0.9</td>
+<td>File upload parsing (CSV/JSON ingestion)</td>
+</tr>
+</tbody></table>
+<h3>AI Integration</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Model</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Google Generative AI SDK</strong></td>
+<td>0.8+</td>
+<td>Python client for Gemini API</td>
+</tr>
+<tr>
+<td><strong>Gemini Flash</strong></td>
+<td>gemini-3.6-flash / gemini-1.5-flash</td>
+<td>Sentiment classification (structured JSON) and RAG synthesis</td>
+</tr>
+<tr>
+<td><strong>API Key Source</strong></td>
+<td><a href="https://aistudio.google.com/app/apikey">Google AI Studio</a></td>
+<td>Single unified API key for both NLP and RAG pipelines</td>
+</tr>
+</tbody></table>
+<h3>Deployment</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Vercel</strong></td>
+<td>Production hosting with serverless Python functions</td>
+</tr>
+<tr>
+<td><strong>Vercel CI/CD</strong></td>
+<td>Automated builds on <code>git push</code> via GitHub integration</td>
+</tr>
+<tr>
+<td><strong>Environment Variables</strong></td>
+<td><code>GEMINI_API_KEY</code> managed via Vercel dashboard</td>
+</tr>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>Source control and deployment trigger</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6. Data Architecture &amp; Schema</h2>
+<h3>SQLite Schema</h3>
+<pre><code class="language-sql">CREATE TABLE products (
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    name      TEXT NOT NULL,
+    sku       TEXT NOT NULL UNIQUE,
+    category  TEXT NOT NULL,
+    order_id  TEXT NOT NULL DEFAULT &#39;#7676&#39;,
+    price     REAL NOT NULL,
+    stock     INTEGER NOT NULL DEFAULT 0,
+    status    TEXT NOT NULL DEFAULT &#39;In Stock&#39;
+);
+
+CREATE TABLE reviews (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER NOT NULL,
+    reviewer   TEXT NOT NULL,
+    text       TEXT NOT NULL,
+    timestamp  TEXT NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+</code></pre>
+<h3>Seed Dataset</h3>
+<p>The database auto-seeds with a <strong>30-product hardware and power equipment catalog</strong> in Indian Rupees (₹) spanning 5 categories, accompanied by <strong>126 domain-specific customer reviews</strong> from CSV datasets in <code>backend/data/</code>.</p>
+<hr>
+<h2>7. AI Integration Strategy</h2>
+<h3>Unified API Key Architecture</h3>
+<p>Both the NLP classification engine and the RAG synthesis engine share a single Google Gemini API key, configured via the <code>GEMINI_API_KEY</code> environment variable. This simplifies credential management while allowing independent model configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Temperature</th>
+<th>Output Format</th>
+<th>Model Priority</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NLP Classifier</td>
+<td>0.1 (near-deterministic)</td>
+<td><code>application/json</code></td>
+<td>gemini-3.6-flash → gemini-flash-latest → gemini-1.5-flash</td>
+</tr>
+<tr>
+<td>RAG Synthesizer</td>
+<td>0.2 (slight creativity)</td>
+<td>Free-form text</td>
+<td>Same cascade</td>
+</tr>
+</tbody></table>
+<h3>Hot-Reload Capability</h3>
+<p>The <code>POST /api/key</code> endpoint enables runtime API key rotation without server restart. The <code>nlp_engine.reinitialize(key)</code> function reinitializes the Gemini client and clears the sentiment cache atomically.</p>
+<h3>In-Memory Caching</h3>
+<p>Sentiment summaries are cached in a Python dictionary (<code>_sentiment_cache</code>) keyed by <code>product_id</code>. Cache invalidation is triggered explicitly when:</p>
+<ul>
+<li>A new review is added (<code>POST /api/reviews</code>)</li>
+<li>Vendor data is synchronized (<code>POST /api/vendor-data/apply</code>)</li>
+<li>Reviews are uploaded via file (<code>POST /api/upload/reviews</code>)</li>
+</ul>
+<hr>
+<h2>8. Deployment Architecture</h2>
+<h3>Vercel Serverless Configuration</h3>
+<pre><code class="language-json">{
+  &quot;version&quot;: 2,
+  &quot;buildCommand&quot;: &quot;cd frontend &amp;&amp; npm ci &amp;&amp; npm run build&quot;,
+  &quot;outputDirectory&quot;: &quot;frontend/dist&quot;,
+  &quot;functions&quot;: {
+    &quot;api/index.py&quot;: {
+      &quot;maxDuration&quot;: 30
+    }
+  },
+  &quot;rewrites&quot;: [
+    { &quot;source&quot;: &quot;/api/:path*&quot;, &quot;destination&quot;: &quot;/api/index.py&quot; },
+    { &quot;source&quot;: &quot;/((?!api/).*)&quot;, &quot;destination&quot;: &quot;/index.html&quot; }
+  ]
+}
+</code></pre>
+<h3>Build Pipeline</h3>
+<ol>
+<li><strong>Frontend build:</strong> <code>npm ci</code> (deterministic install) → <code>npm run build</code> (Vite production bundle)</li>
+<li><strong>Python function:</strong> Vercel auto-detects <code>api/index.py</code>, installs <code>api/requirements.txt</code> via <code>uv</code></li>
+<li><strong>Static assets:</strong> <code>frontend/dist/</code> served via Vercel&#39;s global CDN</li>
+<li><strong>API routing:</strong> <code>/api/*</code> requests routed to the Python serverless function</li>
+<li><strong>SPA fallback:</strong> All non-API routes serve <code>index.html</code> for client-side routing</li>
+</ol>
+<h3>Environment Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Scope</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GEMINI_API_KEY</code></td>
+<td>Production / Preview / Development</td>
+<td>Google AI Studio API key for Gemini Flash</td>
+</tr>
+<tr>
+<td><code>INVENTORY_DB_PATH</code></td>
+<td>Vercel only</td>
+<td>Overrides SQLite path to <code>/tmp/inventory.db</code> (writable sandbox)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>9. API Reference Summary</h2>
+<h3>System Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET</code></td>
+<td><code>/api/status</code></td>
+<td>System statistics, signal distribution, engine status</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/key-status</code></td>
+<td>Gemini API key availability and engine identifier</td>
+</tr>
+</tbody></table>
+<h3>Product Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET</code></td>
+<td><code>/api/products</code></td>
+<td>List all products</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/products/{id}</code></td>
+<td>Get single product</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/products</code></td>
+<td>Create new product</td>
+</tr>
+</tbody></table>
+<h3>Review Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET</code></td>
+<td><code>/api/products/{id}/reviews</code></td>
+<td>List reviews for a product</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/reviews</code></td>
+<td>Add review with instant sentiment classification</td>
+</tr>
+</tbody></table>
+<h3>NLP / Sentiment Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET</code></td>
+<td><code>/api/products/{id}/sentiment</code></td>
+<td>Full sentiment summary with 5-tier distribution</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/analyze</code></td>
+<td>Batch classify arbitrary review texts</td>
+</tr>
+</tbody></table>
+<h3>Demand / Inventory Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET</code></td>
+<td><code>/api/inventory</code></td>
+<td>All products with computed signals and polarity percentages</td>
+</tr>
+</tbody></table>
+<h3>RAG Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST</code></td>
+<td><code>/api/rag</code></td>
+<td>Execute RAG query with metadata pre-filtering</td>
+</tr>
+</tbody></table>
+<h3>Vendor / Upload Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET</code></td>
+<td><code>/api/vendor-data</code></td>
+<td>Simulated external vendor feed</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/vendor-data/apply</code></td>
+<td>Ingest and commit vendor catalog</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/upload/products</code></td>
+<td>Bulk upload products (CSV/JSON)</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/upload/reviews</code></td>
+<td>Bulk upload reviews (CSV/JSON)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>10. Appendices</h2>
+<h3>A. File Structure</h3>
+<pre><code>inventory-sentinel/
+├── api/
+│   ├── index.py               # Vercel serverless entrypoint
+│   └── requirements.txt       # Python deps for Vercel
+├── backend/
+│   ├── main.py                # FastAPI application (669 lines)
+│   ├── nlp_engine.py          # NLP classifier (398 lines)
+│   ├── rag_engine.py          # RAG retrieval + synthesis (301 lines)
+│   ├── database.py            # SQLite ORM + seed data (516 lines)
+│   ├── models.py              # Pydantic schemas (105 lines)
+│   ├── requirements.txt       # Python dependencies
+│   ├── .env                   # API key (gitignored)
+│   └── data/
+│       ├── products_dataset_30.csv
+│       └── reviews_dataset_126.csv
+├── frontend/
+│   ├── index.html             # SPA entry point with Google Fonts
+│   ├── package.json           # React 19, Vite 8, Recharts
+│   ├── vite.config.js         # Vite configuration
+│   └── src/
+│       ├── App.jsx            # Route definitions
+│       ├── api.js             # API client (169 lines)
+│       ├── index.css          # Design system (1193 lines)
+│       ├── pages/
+│       │   ├── HomePage.jsx       # 759 lines
+│       │   ├── SentimentPage.jsx  # 401 lines
+│       │   ├── DemandPage.jsx     # 270 lines
+│       │   └── RagPage.jsx        # 312 lines
+│       └── components/
+│           ├── Navbar.jsx
+│           ├── SignalCard.jsx
+│           ├── SentimentBadge.jsx
+│           ├── ReviewTable.jsx
+│           ├── TerminalInput.jsx
+│           └── EmptyState.jsx
+├── vercel.json                # Deployment configuration
+├── run.bat                    # Local one-click launcher
+└── .gitignore
+</code></pre>
+<h3>B. Heuristic Keyword Banks</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Count</th>
+<th>Example Keywords</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VERY_POSITIVE</td>
+<td>24</td>
+<td>amazing, incredible, outstanding, exceptional, perfect, flawless, blown away</td>
+</tr>
+<tr>
+<td>POSITIVE</td>
+<td>27</td>
+<td>great, solid, reliable, efficient, sturdy, responsive, well-made</td>
+</tr>
+<tr>
+<td>NEGATIVE</td>
+<td>26</td>
+<td>disappointing, poor, cheap, flimsy, frustrating, overpriced, broke</td>
+</tr>
+<tr>
+<td>VERY_NEGATIVE</td>
+<td>21</td>
+<td>terrible, horrible, worst, awful, useless, waste, garbage, dead</td>
+</tr>
+<tr>
+<td>NEUTRAL</td>
+<td>11</td>
+<td>decent, okay, average, fine, not bad, acceptable</td>
+</tr>
+</tbody></table>
+<h3>C. Pydantic Model Inventory</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Fields</th>
+<th>Used By</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ProductCreate</code></td>
+<td>name, category, price, stock, sku?, order_id?, status?</td>
+<td><code>POST /api/products</code></td>
+</tr>
+<tr>
+<td><code>ReviewCreate</code></td>
+<td>product_id, reviewer, text</td>
+<td><code>POST /api/reviews</code></td>
+</tr>
+<tr>
+<td><code>BatchAnalyzeRequest</code></td>
+<td>reviews: list[str]</td>
+<td><code>POST /api/analyze</code></td>
+</tr>
+<tr>
+<td><code>RagRequest</code></td>
+<td>query, product_id?</td>
+<td><code>POST /api/rag</code></td>
+</tr>
+<tr>
+<td><code>VendorSyncRequest</code></td>
+<td>products, reviews, analyzed?</td>
+<td><code>POST /api/vendor-data/apply</code></td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Document generated September 2026. Inventory Sentinel v1.0.0.</em></p>

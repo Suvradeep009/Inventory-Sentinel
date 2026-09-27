@@ -14,6 +14,7 @@ Signal Thresholds (per spec):
 import os
 import re
 import json
+import time
 import random
 import hashlib
 import logging
@@ -31,13 +32,22 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 API_KEY_MISSING = not GEMINI_API_KEY or GEMINI_API_KEY in ("YOUR_KEY_HERE", "YOUR_GEMINI_API_KEY_HERE", "<YOUR_GEMINI_API_KEY>")
 
 _gemini_client = None
+_cooldown_until = 0.0
+
+def _is_rate_limited() -> bool:
+    return time.time() < _cooldown_until
+
+def _set_rate_limit(seconds: float = 60.0) -> None:
+    global _cooldown_until
+    _cooldown_until = time.time() + seconds
 
 def _init_client(key: str):
     """Initialize (or reinitialize) the Gemini client with a given key."""
     global _gemini_client, API_KEY_MISSING, GEMINI_API_KEY
     try:
         import google.generativeai as genai
-        models_to_try = ["gemini-3.6-flash", "gemini-flash-latest", "gemini-1.5-flash"]
+        genai.configure(api_key=key)
+        models_to_try = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-flash-latest"]
         for m in models_to_try:
             try:
                 _gemini_client = genai.GenerativeModel(
@@ -310,11 +320,16 @@ def get_product_sentiment_summary(product_id: int) -> dict:
 
     # ── Try Gemini batch first ──
     gemini_results = None
-    if _gemini_client:
+    if _gemini_client and not _is_rate_limited():
         try:
             gemini_results = _classify_batch_gemini(review_texts)
         except Exception as exc:
-            logger.warning("[NLP] Gemini batch failed for product %d, using heuristic: %s", product_id, exc)
+            err_str = str(exc)
+            if "429" in err_str or "quota" in err_str.lower() or "resourceexhausted" in err_str.lower():
+                _set_rate_limit(60.0)
+                logger.warning("[NLP] Gemini rate limit reached for product %d, falling back to heuristic (cooldown 60s): %s", product_id, exc)
+            else:
+                logger.warning("[NLP] Gemini batch failed for product %d, using heuristic: %s", product_id, exc)
 
     for i, review in enumerate(reviews):
         if gemini_results and i < len(gemini_results):

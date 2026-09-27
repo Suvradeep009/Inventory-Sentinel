@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProducts, getSentiment, addReview, getKeyStatus } from '../api';
 import ReviewTable from '../components/ReviewTable';
-import SentimentBadge from '../components/SentimentBadge';
 
 const TIERS = [
   { key: 'VERY_BAD',  label: 'Very Bad',  pillClass: 'pill-badge--coral',   border: 'var(--coral-accent)' },
@@ -15,7 +14,6 @@ export default function SentimentPage() {
   const [products, setProducts]       = useState([]);
   const [selectedId, setSelectedId]   = useState(null);
   const [sentiment, setSentiment]     = useState(null);
-  const [loading, setLoading]         = useState(false);
   const [keyInfo, setKeyInfo]         = useState(null);
 
   // New review state
@@ -35,11 +33,9 @@ export default function SentimentPage() {
 
   const loadProductSentiment = (pid) => {
     if (!pid) return;
-    setLoading(true);
     getSentiment(pid)
       .then(setSentiment)
-      .catch(console.error)
-      .finally(() => setLoading(false));
+      .catch(console.error);
   };
 
   useEffect(() => {
@@ -93,14 +89,13 @@ export default function SentimentPage() {
       {/* Header */}
       <header className="masthead">
         <div className="masthead__top">
-          <span>SECTION 02 // NLP COGNITIVE ENGINE</span>
-          <span>STRUCTURED 5-TIER SENTIMENT COMPILATION</span>
-          <span>{keyInfo?.has_key ? '● GEMINI 3.6 FLASH ACTIVE' : '● HEURISTIC FALLBACK'}</span>
+          <span>SECTION 02 // CUSTOMER FEEDBACK</span>
+          <span>5-TIER SATISFACTION BREAKDOWN</span>
+          <span>{keyInfo?.has_key ? '● LIVE MONITORING ACTIVE' : '● STANDARD MODE'}</span>
         </div>
-        <h1 className="masthead__title">Sentiment Classification</h1>
+        <h1 className="masthead__title">Customer Feedback</h1>
         <p className="masthead__lead">
-          Granular parsing of unstructured customer feedback into five distinct qualitative tiers.
-          Each excerpt is evaluated for lexical polarity, failure patterns, and consumer delight.
+          Live categorization of customer reviews into actionable satisfaction tiers.
         </p>
       </header>
 
@@ -163,7 +158,7 @@ export default function SentimentPage() {
               <div className="stat-card__value" style={{ fontSize: '2.8rem' }}>
                 {sentiment.overall_score} <small style={{ fontSize: '1rem', color: 'var(--ink-secondary)' }}>/ 5.0</small>
               </div>
-              <p className="stat-card__meta">Weighted average across {sentiment.total_reviews} verified critiques.</p>
+              <p className="stat-card__meta">Weighted average across {sentiment.total_reviews} verified customer reviews.</p>
             </div>
           </div>
 
@@ -178,7 +173,7 @@ export default function SentimentPage() {
                   : '6px solid var(--ink-black)',
               }}
             >
-              <span className="stat-card__label">Autonomous Signal</span>
+              <span className="stat-card__label">Restock Recommendation</span>
               <div style={{ margin: '0.6rem 0' }}>
                 <span
                   className={`pill-badge ${
@@ -242,15 +237,15 @@ export default function SentimentPage() {
         <section style={{ marginBottom: '3rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', textTransform: 'uppercase' }}>
-              Five-Tier Sentiment Buckets // {currentProduct?.name || 'Selected Item'}
+              Five-Tier Satisfaction Breakdown // {currentProduct?.name || 'Selected Item'}
             </h2>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--ink-secondary)' }}>
-              RULE: MANDATORY 5-TIER BUCKETING
+              5 SATISFACTION TIERS
             </span>
           </div>
 
           <div className="sentiment-bucket-grid">
-            {TIERS.map(({ key, label, pillClass, border }) => {
+            {TIERS.map(({ key, label, border }) => {
               const items = bucketedReviews[key] || [];
               const pct = sentiment?.percentages?.[key] || 0;
 
@@ -277,7 +272,7 @@ export default function SentimentPage() {
                           color: 'var(--ink-muted)',
                         }}
                       >
-                        NO ENTRIES
+                        No reviews in this tier
                       </div>
                     ) : (
                       items.map((r, i) => (
@@ -304,10 +299,10 @@ export default function SentimentPage() {
           <div className="table-card__header">
             <div>
               <h2 className="table-card__title">
-                Review Registry // {currentProduct?.name || 'Catalog Item'}
+                Review History // {currentProduct?.name || 'Catalog Item'}
               </h2>
               <p style={{ fontSize: '0.85rem', color: 'var(--ink-secondary)', marginTop: '2px' }}>
-                Editorial broadsheet table with 1px hairline grid boundaries.
+                Customer review history categorized by satisfaction tier.
               </p>
             </div>
 
@@ -339,16 +334,16 @@ export default function SentimentPage() {
         </section>
       )}
 
-      {/* Live Review Ingestion & Gemini Classification Form */}
+      {/* Live Review Submission & Classification Form */}
       <section className="stat-card" style={{ padding: '2rem', marginTop: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: 'var(--border-hairline)', paddingBottom: '0.75rem' }}>
           <div>
-            <span className="stat-card__label">INTERACTIVE NLP INTAKE</span>
+            <span className="stat-card__label">ADD CUSTOMER REVIEW</span>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', textTransform: 'uppercase' }}>
-              Submit Customer Review for Live Gemini Classification
+              Submit Customer Review for Instant Categorization
             </h3>
           </div>
-          <span className="pill-badge pill-badge--mint">REAL-TIME INFERENCE</span>
+          <span className="pill-badge pill-badge--mint">INSTANT CATEGORIZATION</span>
         </div>
 
         <form onSubmit={handleAddReview}>
@@ -370,7 +365,7 @@ export default function SentimentPage() {
 
             <div>
               <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700, marginBottom: '0.35rem' }}>
-                REVIEW EXCERPT TEXT
+                CUSTOMER REVIEW TEXT
               </label>
               <input
                 type="text"
@@ -389,7 +384,7 @@ export default function SentimentPage() {
                 className="btn-pill btn-pill--mint"
                 disabled={submitting}
               >
-                {submitting ? 'Classifying...' : '[ Classify & Ingest ]'}
+                {submitting ? 'Categorizing...' : 'Submit Review'}
               </button>
             </div>
           </div>

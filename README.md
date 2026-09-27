@@ -2,24 +2,27 @@ Inventory Sentinel tracks hardware inventory and uses Google Gemini AI to read c
 
 ## 1. How to Start the App
 
-**Using the Terminal**
+You can run Inventory Sentinel in either mode:
 
-1. Open Command Prompt or PowerShell and go to the backend folder:
+### Option A: Next.js V2 Platform (Recommended)
+1. **Quick Launch**: Double-click `run.bat` in the project root.
+2. **Or via Terminal**:
+```powershell
+cd e:\CSBoards_Prep\inventory-sentinel
+npm run dev
+```
+3. Open your browser at **`http://localhost:3000`**.
+
+---
+
+### Option B: Python FastAPI + React BroadSheet Stack
+1. Open PowerShell and navigate to the backend:
 ```powershell
 cd e:\CSBoards_Prep\inventory-sentinel\backend
-
-```
-
-
-2. Start the local server:
-```powershell
 python -m uvicorn main:app --reload --port 8000
-
 ```
-
-
-3. Open your web browser and go to `http://localhost:8000`.
-*(To stop the server, press **Ctrl + C** in the terminal).*
+2. Open your browser at **`http://localhost:8000`**.
+*(API documentation and Swagger UI available at `http://localhost:8000/docs`)*.
 
 ---
 
@@ -27,8 +30,9 @@ python -m uvicorn main:app --reload --port 8000
 
 | Resource | URL | Description |
 | --- | --- | --- |
-| **Web App** | `http://localhost:8000` | The main application interface. |
-| **API Docs** | `http://localhost:8000/docs` | Technical page to test backend connections. |
+| **Next.js V2 Platform** | `http://localhost:3000` | Full-stack Next.js app with live DummyJSON store sync & Gemini analysis. |
+| **FastAPI Web App** | `http://localhost:8000` | FastAPI server hosting the SQLite catalog & built React frontend. |
+| **FastAPI Swagger Docs**| `http://localhost:8000/docs` | Interactive API documentation for backend endpoints. |
 
 ---
 

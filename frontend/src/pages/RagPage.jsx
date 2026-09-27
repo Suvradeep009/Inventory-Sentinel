@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { queryRag, getProducts, getKeyStatus } from '../api';
 import SentimentBadge from '../components/SentimentBadge';
+import EmptyState from '../components/EmptyState';
 
 const HARDWARE_SAMPLE_QUERIES = [
   'Is the Battery having premature failure or degradation issues?',
@@ -80,14 +81,13 @@ export default function RagPage() {
       {/* Editorial Header */}
       <header className="masthead">
         <div className="masthead__top">
-          <span>SECTION 04 // RAG EXECUTIVE INTELLIGENCE</span>
-          <span>HARDWARE & POWER GROUNDED SYNTHESIS</span>
-          <span>{keyInfo?.has_key ? '● GEMINI INFERENCE ACTIVE' : '● EXECUTIVE SYNTHESIS'}</span>
+          <span>SECTION 04 // PRODUCT ASSISTANT</span>
+          <span>CUSTOMER REVIEW SYNTHESIS</span>
+          <span>{keyInfo?.has_key ? '● ASSISTANT READY' : '● SEARCH READY'}</span>
         </div>
-        <h1 className="masthead__title">Insights Directory</h1>
+        <h1 className="masthead__title">Smart Search</h1>
         <p className="masthead__lead">
-          Conversational executive synthesis grounded in verified customer review archives.
-          Applies strict product metadata pre-filtering to eliminate cross-catalog contamination.
+          Ask questions about any product and get instant answers summarized directly from customer reviews.
         </p>
       </header>
 
@@ -95,9 +95,9 @@ export default function RagPage() {
       <section className="search-directory-box">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <span className="stat-card__label">EQUIPMENT QUERY DESK</span>
+            <span className="stat-card__label">PRODUCT ASSISTANT DESK</span>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', textTransform: 'uppercase', marginTop: '4px' }}>
-              Query Hardware Sentiment & Restock Feasibility
+              Ask About Products & Customer Feedback
             </h2>
           </div>
 
@@ -132,7 +132,7 @@ export default function RagPage() {
             className="btn-saas btn-saas--mint"
             disabled={isSearching}
           >
-            {isSearching ? 'Analyzing...' : '[ Run Analysis ]'}
+            {isSearching ? 'Searching...' : 'Search Reviews'}
           </button>
         </form>
 
@@ -157,6 +157,16 @@ export default function RagPage() {
         </div>
       </section>
 
+      {/* Conversational Empty State */}
+      {!activeResult && !isSearching && (
+        <div style={{ marginTop: '2rem' }}>
+          <EmptyState
+            message="What would you like to know about your products?"
+            sub="Ask any question above or choose a suggested inquiry to see customer insights."
+          />
+        </div>
+      )}
+
       {/* De-Technicalized Conversational Executive Summary */}
       {activeResult && (
         <section className="dispatch-card">
@@ -175,12 +185,12 @@ export default function RagPage() {
               </span>
             </div>
             <span className="status-badge status-badge--neutral">
-              ANALYST DISPATCH
+              CUSTOMER SUMMARY
             </span>
           </div>
 
           <h3 className="dispatch-card__headline">
-            Executive Sentiment Synthesis
+            Customer Feedback Summary
           </h3>
 
           <div
@@ -192,7 +202,7 @@ export default function RagPage() {
               color: 'var(--ink-black)',
             }}
           >
-            {activeResult.answer || 'Extracting feedback records and synthesizing executive summary...'}
+            {activeResult.answer || 'Searching reviews and summarizing customer feedback...'}
           </div>
 
           {/* Natural Operational Advisory Box */}
@@ -269,39 +279,39 @@ export default function RagPage() {
         </section>
       )}
 
-      {/* About Us / Dual-Engine Architecture Manifesto */}
+      {/* About Us / Platform Overview */}
       <section className="inverted-block" style={{ marginTop: '3rem' }}>
-        <span className="inverted-block__tag">ARCHITECTURE & MANIFESTO</span>
+        <span className="inverted-block__tag">SYSTEM OVERVIEW</span>
         <h2 className="inverted-block__title">
-          About Sentinel: The Dual-Engine Intelligence Platform.
+          About Sentinel: Customer-Driven Inventory Intelligence.
         </h2>
         <p className="inverted-block__text">
-          Inventory Sentinel operates on a dual-engine architecture designed to eliminate intuition-driven inventory waste.
-          By marrying real-time review sentiment with inventory velocity, the system guarantees that capital only chases customer delight.
+          Inventory Sentinel aligns product purchasing directly with customer satisfaction.
+          By pairing real-time customer reviews with stock velocity, the system ensures inventory orders prioritize items that customers love.
         </p>
 
         <div className="inverted-block__grid">
           <div>
-            <div className="inverted-block__stat-val" style={{ color: 'var(--mint-accent)' }}>ENGINE I</div>
-            <div className="inverted-block__stat-label">Structured NLP Classification</div>
+            <div className="inverted-block__stat-val" style={{ color: 'var(--mint-accent)' }}>MODULE I</div>
+            <div className="inverted-block__stat-label">Customer Feedback Tracking</div>
             <p style={{ fontSize: '0.82rem', color: '#AAA', marginTop: '6px', lineHeight: 1.4 }}>
-              Batches critiques into Google Gemini, enforcing rigid JSON schema parsing across five granular tiers.
+              Categorizes customer reviews across five clear satisfaction tiers from Very Bad to Very Good.
             </p>
           </div>
 
           <div>
-            <div className="inverted-block__stat-val" style={{ color: 'var(--mint-accent)' }}>ENGINE II</div>
-            <div className="inverted-block__stat-label">Metadata Pre-Filtered RAG</div>
+            <div className="inverted-block__stat-val" style={{ color: 'var(--mint-accent)' }}>MODULE II</div>
+            <div className="inverted-block__stat-label">Smart Product Assistant</div>
             <p style={{ fontSize: '0.82rem', color: '#AAA', marginTop: '6px', lineHeight: 1.4 }}>
-              Extracts target product metadata to isolate review corpora before scoring, eliminating cross-product noise.
+              Searches verified customer reviews directly to give you instant, clear answers to product inquiries.
             </p>
           </div>
 
           <div>
             <div className="inverted-block__stat-val" style={{ color: 'var(--coral-accent)' }}>RULESET</div>
-            <div className="inverted-block__stat-label">Automated Threshold Halts</div>
+            <div className="inverted-block__stat-label">Automated Restock Actions</div>
             <p style={{ fontSize: '0.82rem', color: '#AAA', marginTop: '6px', lineHeight: 1.4 }}>
-              ≥45% negative sentiment freezes restocks; ≥65% positive sentiment triggers purchase order acceleration.
+              ≥45% negative feedback pauses restocks; ≥65% positive feedback recommends order expansion.
             </p>
           </div>
         </div>

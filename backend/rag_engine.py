@@ -27,7 +27,7 @@ if not API_KEY_MISSING:
         import google.generativeai as genai
         genai.configure(api_key=GEMINI_API_KEY)
         # Try active flash models supported by the API
-        candidate_models = ["gemini-3.6-flash", "gemini-flash-latest", "gemini-1.5-flash"]
+        candidate_models = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-flash-latest"]
         for m in candidate_models:
             try:
                 _gemini_client = genai.GenerativeModel(

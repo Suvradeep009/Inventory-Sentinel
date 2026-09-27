@@ -1,16 +1,16 @@
 @echo off
-title Inventory Sentinel
+title Inventory Sentinel V2
 echo ============================================================
-echo   INVENTORY SENTINEL -- AI Autonomous Inventory Dispatch
+echo   INVENTORY SENTINEL V2 -- Full-Stack AI Inventory Platform
 echo ============================================================
 echo.
-echo [1/2] Navigating to backend directory...
-cd /d "%~dp0backend"
+echo [1/2] Navigating to project directory...
+cd /d "%~dp0"
 
-echo [2/2] Launching server at http://localhost:8000 ...
+echo [2/2] Launching Next.js platform at http://localhost:3000 ...
 echo.
 echo Press Ctrl+C in this window anytime to terminate hosting.
 echo.
-start http://localhost:8000
-python -m uvicorn main:app --reload --port 8000
+start http://localhost:3000
+npm run dev
 pause

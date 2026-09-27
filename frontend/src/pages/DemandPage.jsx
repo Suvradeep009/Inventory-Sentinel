@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getInventory } from '../api';
 import SignalCard from '../components/SignalCard';
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid,
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
 } from 'recharts';
 
 const editorialTooltipStyle = {
@@ -48,7 +48,7 @@ export default function DemandPage() {
     return (
       <div className="page-wrapper">
         <div style={{ padding: '4rem 0', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '1rem' }}>
-          COMPILING INVENTORY SIGNALS WITH GEMINI 3.6 FLASH...
+          Updating inventory restock signals...
         </div>
       </div>
     );
@@ -78,14 +78,13 @@ export default function DemandPage() {
       {/* Header */}
       <header className="masthead">
         <div className="masthead__top">
-          <span>SECTION 03 // DEMAND SIGNALS</span>
-          <span>AUTOMATED INVENTORY ALLOCATION PROTOCOLS</span>
+          <span>SECTION 03 // RESTOCK SIGNALS</span>
+          <span>AUTOMATED INVENTORY RECOMMENDATIONS</span>
           <span>THRESHOLD DIRECTIVES ACTIVE</span>
         </div>
-        <h1 className="masthead__title">Demand Alerts & Procurement</h1>
+        <h1 className="masthead__title">Restock Signals</h1>
         <p className="masthead__lead">
-          Automated supply chain interventions driven by consumer sentiment metrics.
-          Negative feedback thresholds trigger immediate restock moratoria, while acclaim unlocks procurement surges.
+          Automated purchase recommendations driven by customer satisfaction trends.
         </p>
       </header>
 
@@ -176,10 +175,10 @@ export default function DemandPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', textTransform: 'uppercase' }}>
-              Sentiment Polarity vs. Stock Velocity
+              Customer Satisfaction vs. Stock Levels
             </h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--ink-secondary)', marginTop: '2px' }}>
-              Flat geometric bar mapping of negative sentiment (Coral) and positive acclaim (Mint Green) across catalog lines.
+              Comparison of negative feedback (Coral) and positive feedback (Mint Green) across catalog lines.
             </p>
           </div>
 
@@ -227,7 +226,7 @@ export default function DemandPage() {
       <section style={{ marginBottom: '3rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', textTransform: 'uppercase' }}>
-            Catalog Restock Roster ({filteredInventory.length})
+            Catalog Restock Recommendations ({filteredInventory.length})
           </h2>
 
           <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -237,7 +236,7 @@ export default function DemandPage() {
               style={{ padding: '0.4rem 1rem', fontSize: '0.74rem' }}
               onClick={() => setFilterSignal('ALL')}
             >
-              All Directives ({inventory.length})
+              All Products ({inventory.length})
             </button>
             <button
               type="button"

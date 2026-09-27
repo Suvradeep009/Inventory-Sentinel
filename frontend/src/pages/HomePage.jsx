@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   getStatus,
@@ -27,7 +27,7 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
     setSyncing(true);
     setError(null);
     setSyncStep('FETCHING');
-    setStatusMessage(`Fetching raw catalog & 35 review transcripts from ${vendorUrl}...`);
+    setStatusMessage(`Fetching catalog & customer reviews from ${vendorUrl}...`);
 
     try {
       // 1. Fetch raw dataset from Vendor API
@@ -35,9 +35,9 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
       const products = vendorData.products || [];
       const reviews = vendorData.reviews || [];
 
-      // 2. Display loading state: analyzing reviews via Gemini NLP
+      // 2. Display loading state: analyzing reviews
       setSyncStep('ANALYZING');
-      setStatusMessage(`Received ${products.length} hardware products & ${reviews.length} reviews. Sending critiques to Gemini NLP engine (/api/analyze)...`);
+      setStatusMessage(`Received ${products.length} products & ${reviews.length} reviews. Analyzing customer feedback...`);
 
       const reviewTexts = reviews.map((r) => r.text);
       const analysisRes = await analyzeReviewsBatch(reviewTexts);
@@ -45,7 +45,7 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
 
       // 3. Commit to database and update state
       setSyncStep('COMMITTING');
-      setStatusMessage(`Classified ${analyzedItems.length} reviews across 5 sentiment tiers. Committing fresh stock counts & reviews to Sentinel SQLite...`);
+      setStatusMessage(`Categorized ${analyzedItems.length} reviews across 5 satisfaction tiers. Updating stock levels and restock signals...`);
 
       await applyVendorData({
         products,
@@ -65,7 +65,7 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
 
       setSyncStep('DONE');
       setStatusMessage(
-        `Synchronization complete: ${products.length} hardware products updated, ${reviews.length} critiques classified. Restock moratoriums & demand signals recalculated.`
+        `Synchronization complete: ${products.length} products updated and customer reviews categorized. Restock signals updated.`
       );
 
       if (onSyncSuccess) {
@@ -88,17 +88,17 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
     <div className="sync-module">
       <div className="sync-module__top">
         <div style={{ flex: 1 }}>
-          <div className="sync-module__tag">SECTION 00 // LIVE STORE INTEGRATION</div>
-          <h3 className="sync-module__title">Sync Live Store Data</h3>
+          <div className="sync-module__tag">SECTION 00 // STORE INTEGRATION</div>
+          <h3 className="sync-module__title">Sync Store Data</h3>
           <p className="sync-module__desc">
-            Direct automated ingestion pipeline from simulated vendor inventory & customer review endpoints.
-            Evaluates feedback through Gemini NLP and recalculates demand restock triggers.
+            Direct automated update from store inventory and customer reviews.
+            Evaluates customer feedback and recalculates restock recommendations.
           </p>
 
           {/* API Feed Endpoint Input */}
           <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700, color: 'var(--ink-secondary)' }}>
-              API FEED ENDPOINT:
+              STORE DATA SOURCE:
             </span>
             <input
               type="text"
@@ -164,25 +164,25 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
           {syncing ? (
             <>
               <span className="navbar__status-dot" style={{ animation: 'pulse 1s infinite' }} />
-              <span>[ Processing Pipeline... ]</span>
+              <span>Syncing Store Data...</span>
             </>
           ) : (
             <>
               <span>⚡</span>
-              <span>Sync Live Store Data</span>
+              <span>Sync Store Data</span>
             </>
           )}
         </button>
 
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
           <span className="status-badge status-badge--neutral" style={{ borderRadius: '4px' }}>
-            5 CORE HARDWARE PRODUCTS
+            5 CORE PRODUCTS
           </span>
           <span className="status-badge status-badge--neutral" style={{ borderRadius: '4px' }}>
-            35 UNSTRUCTURED REVIEWS
+            35 CUSTOMER REVIEWS
           </span>
           <span className="status-badge status-badge--success" style={{ borderRadius: '4px' }}>
-            ● GEMINI 3.6 FLASH NLP
+            ● FEEDBACK TRACKER ACTIVE
           </span>
         </div>
       </div>
@@ -200,7 +200,7 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
                   : ''
               }`}
             >
-              1. Fetch Vendor API
+              1. Fetch Store Data
             </span>
             <span
               className={`sync-step-item ${
@@ -211,7 +211,7 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
                   : ''
               }`}
             >
-              2. Gemini NLP Classification
+              2. Categorize Feedback
             </span>
             <span
               className={`sync-step-item ${
@@ -222,7 +222,7 @@ function LiveStoreSyncModule({ onSyncSuccess }) {
                   : ''
               }`}
             >
-              3. Commit & Recalculate
+              3. Update Restock Signals
             </span>
           </div>
 
@@ -349,14 +349,14 @@ export default function HomePage() {
       {/* Editorial Broadsheet Masthead */}
       <header className="masthead">
         <div className="masthead__top">
-          <span>VOL. XXIV // HARDWARE & POWER DIRECTORY</span>
-          <span>AUTONOMOUS RESTOCK GOVERNANCE & NLP ANALYTICS</span>
+          <span>VOL. XXIV // PRODUCT DIRECTORY</span>
+          <span>AUTONOMOUS RESTOCK GOVERNANCE & CUSTOMER FEEDBACK</span>
           <span>{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}</span>
         </div>
         <h1 className="masthead__title">Inventory Sentinel</h1>
         <p className="masthead__lead">
           Industrial hardware & power equipment catalog dispatch.
-          Autonomous signals continuously monitor customer sentiment to freeze compromised inventory and accelerate proven power assets.
+          Autonomous signals continuously monitor customer satisfaction to pause restocks on low-rated items and expand top performers.
         </p>
       </header>
 
@@ -367,15 +367,15 @@ export default function HomePage() {
           Hardware & Power Catalog Intelligence.
         </h2>
         <p className="inverted-block__text">
-          Continuous NLP classification across Inverters, Batteries, Generators, Chargers, and Power units.
+          Continuous feedback categorization across Inverters, Batteries, Generators, Chargers, and Power units.
           Empirical signal triggers protect working capital: automatic purchase order halts are triggered at ≥45% negative feedback,
           while ≥65% positive acclaim unlocks procurement volume surges.
         </p>
 
         <div className="inverted-block__grid">
           <div>
-            <div className="inverted-block__stat-val">{keyInfo?.has_key ? 'ONLINE' : 'HEURISTIC'}</div>
-            <div className="inverted-block__stat-label">Gemini Inference Engine</div>
+            <div className="inverted-block__stat-val">{keyInfo?.has_key ? 'ONLINE' : 'STANDARD'}</div>
+            <div className="inverted-block__stat-label">Automated Analysis Engine</div>
           </div>
           <div>
             <div className="inverted-block__stat-val">{totalProducts}</div>
@@ -388,6 +388,10 @@ export default function HomePage() {
           <div>
             <div className="inverted-block__stat-val" style={{ color: 'var(--coral-accent)' }}>{haltSignals}</div>
             <div className="inverted-block__stat-label">Restock Moratoria</div>
+          </div>
+          <div>
+            <div className="inverted-block__stat-val" style={{ color: 'var(--mint-accent)' }}>{increaseOrders}</div>
+            <div className="inverted-block__stat-label">Order Surges</div>
           </div>
         </div>
       </section>
@@ -522,18 +526,18 @@ export default function HomePage() {
           <div className="stat-card" style={{ height: '100%' }}>
             <div>
               <div className="stat-card__header">
-                <span className="stat-card__label">02. NLP ENGINE</span>
+                <span className="stat-card__label">02. CUSTOMER FEEDBACK</span>
                 <span className="status-badge status-badge--neutral">5 TIERS</span>
               </div>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', marginBottom: '0.6rem' }}>
-                Sentiment Analysis
+                Customer Feedback
               </h3>
               <p style={{ color: 'var(--ink-secondary)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '1.5rem' }}>
-                Examine customer reviews strictly bucketed into five editorial columns from Very Bad to Very Good with confidence scores.
+                Live categorization of customer reviews into actionable satisfaction tiers from Very Bad to Very Good.
               </p>
             </div>
             <Link to="/sentiment" className="btn-saas btn-saas--black" style={{ alignSelf: 'flex-start' }}>
-              Explore Sentiment Grid →
+              Explore Review Tracker →
             </Link>
           </div>
         </div>
@@ -542,18 +546,18 @@ export default function HomePage() {
           <div className="stat-card" style={{ height: '100%' }}>
             <div>
               <div className="stat-card__header">
-                <span className="stat-card__label">03. DEMAND AUTOMATION</span>
+                <span className="stat-card__label">03. RESTOCK SIGNALS</span>
                 <span className="status-badge status-badge--danger">ALERTS</span>
               </div>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', marginBottom: '0.6rem' }}>
                 Restock Signals
               </h3>
               <p style={{ color: 'var(--ink-secondary)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '1.5rem' }}>
-                View geometric charts correlating review sentiment with inventory levels and automated order actions.
+                Automated purchase recommendations driven by customer satisfaction trends.
               </p>
             </div>
             <Link to="/demand" className="btn-saas btn-saas--black" style={{ alignSelf: 'flex-start' }}>
-              View Demand Dashboard →
+              View Restock Signals →
             </Link>
           </div>
         </div>
@@ -562,18 +566,18 @@ export default function HomePage() {
           <div className="stat-card" style={{ height: '100%' }}>
             <div>
               <div className="stat-card__header">
-                <span className="stat-card__label">04. RAG KNOWLEDGE</span>
+                <span className="stat-card__label">04. SMART SEARCH</span>
                 <span className="status-badge status-badge--success">GROUNDED</span>
               </div>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', marginBottom: '0.6rem' }}>
-                Insights Directory
+                Smart Search
               </h3>
               <p style={{ color: 'var(--ink-secondary)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '1.5rem' }}>
-                Query the inventory knowledge base using keyword retrieval and Gemini-synthesized diagnostic dispatches.
+                Ask questions about any product and get instant answers summarized directly from customer reviews.
               </p>
             </div>
             <Link to="/insights" className="btn-saas btn-saas--black" style={{ alignSelf: 'flex-start' }}>
-              Launch RAG Directory →
+              Launch Smart Search →
             </Link>
           </div>
         </div>

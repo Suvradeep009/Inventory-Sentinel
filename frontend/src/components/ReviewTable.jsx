@@ -4,7 +4,7 @@ export default function ReviewTable({ reviews }) {
   if (!reviews || reviews.length === 0) {
     return (
       <div style={{ padding: '2.5rem', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--ink-secondary)' }}>
-        [ NO REVIEWS RECORDED FOR THIS PRODUCT CATALOG ENTRY ]
+        No customer reviews recorded for this product yet.
       </div>
     );
   }
@@ -16,9 +16,9 @@ export default function ReviewTable({ reviews }) {
           <tr>
             <th style={{ width: '40px' }}>No.</th>
             <th style={{ width: '130px' }}>Reviewer</th>
-            <th>Critique Excerpt</th>
-            <th style={{ width: '140px' }}>Sentiment Tier</th>
-            <th style={{ width: '90px' }}>Certainty</th>
+            <th>Customer Review</th>
+            <th style={{ width: '140px' }}>Satisfaction Tier</th>
+            <th style={{ width: '90px' }}>Confidence</th>
           </tr>
         </thead>
         <tbody>
