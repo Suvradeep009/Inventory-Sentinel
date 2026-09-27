@@ -1,8 +1,8 @@
-backend/
-frontend/
-api/
-AI_Inventory_Tech_Report.pdf
-build_pdf.py
-report_content.html
-report_styled.html
-project-architecture-report.md
+/backend/
+/frontend/
+/api/
+/AI_Inventory_Tech_Report.pdf
+/build_pdf.py
+/report_content.html
+/report_styled.html
+/project-architecture-report.md
